@@ -34,7 +34,7 @@ def all_path(dirname):
     # print(result)
     # 列表排序
     result.sort(key=lambda x: int(x.split('\\')[-1].split('.')[0]))
-    print(len(result))
+    # print(len(result))
     return result  # 返回文件列表
 
 
@@ -151,9 +151,10 @@ class Example(QWidget):
 
             # excel_list = ['D:/home/闫继龙/党务/2018年9月党统/计算汇总/表1/1.xls']
             for file_excel in excel_list:
-                by_sheet = u'附件3—党组织情况统计表（表1）'
+                # by_sheet = u'附件3—党组织情况统计表（表1）'
                 # 打开数据所在的工作簿，以及选择存有数据的工作表
                 book = xlrd.open_workbook(file_excel)
+                by_sheet = book.sheets()[0].name
                 sheet = book.sheet_by_name(by_sheet)
                 n_rows = sheet.nrows  # 行数
 
@@ -168,15 +169,24 @@ class Example(QWidget):
                     col_list = [4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
                     for c in range(len(col_list)):
                         df = row[col_list[c]]
+
                         if isinstance(df, str):
                             df = 0
-                        else:
+                        elif isinstance(df, float):
                             df = int(df)
+                        elif c in col_list:
+                            df = 0
+                        else:
+                            showErrorDialog(self, f'表2:{file_excel},{row_num + 1}行,{c + 4 + 1}列', f'存在异常数据{df}')
+                            return
                         row_data.append(df)
                     sheet_data.append(row_data)
 
                 sheet_data = np.array(sheet_data)
-                # print(sheet_data)
+                if np.any(sheet_data < 0):
+                    showErrorDialog(self, f'work1:{file_excel}', '存在小于0的值')
+                    return
+                    # print(sheet_data)
                 work_data += sheet_data
                 # print('88888888888888' * 8)
             db = {
@@ -205,9 +215,10 @@ class Example(QWidget):
 
             # excel_list = ['D:/home/闫继龙/党务/2018年9月党统/计算汇总/表1/1.xls']
             for file_excel in excel_list:
-                by_sheet = u'附件4—教师党员结构统计表（表2）'
+                # by_sheet = u'附件4—教师党员结构统计表（表2）'
                 # 打开数据所在的工作簿，以及选择存有数据的工作表
                 book = xlrd.open_workbook(file_excel)
+                by_sheet = book.sheets()[0].name
                 sheet = book.sheet_by_name(by_sheet)
                 n_rows = sheet.nrows  # 行数
 
@@ -222,15 +233,22 @@ class Example(QWidget):
                     col_list = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21]
                     for c in range(len(col_list)):
                         df = row[col_list[c]]
-
                         if isinstance(df, str):
                             df = 0
-                        else:
+                        elif isinstance(df, float):
                             df = int(df)
+                        elif c in col_list:
+                            df = 0
+                        else:
+                            showErrorDialog(self, f'表2:{file_excel},{row_num + 1}行,{c + 3 + 1}列', f'存在异常数据{df}')
+                            return
                         row_data.append(df)
                     sheet_data.append(row_data)
 
                 sheet_data = np.array(sheet_data)
+                if np.any(sheet_data < 0):
+                    showErrorDialog(self, f'表2:{file_excel}', '存在小于0的值')
+                    return
                 # print(sheet_data)
                 work_data += sheet_data
                 # print('88888888888888' * 8)
@@ -260,9 +278,10 @@ class Example(QWidget):
 
             # excel_list = ['D:/home/闫继龙/党务/2018年9月党统/计算汇总/表3/1.xls']
             for file_excel in excel_list:
-                by_sheet = u'附件5—高层次人才党员统计表（表3）'
+                # by_sheet = u'附件5—高层次人才党员统计表（表3）'
                 # 打开数据所在的工作簿，以及选择存有数据的工作表
                 book = xlrd.open_workbook(file_excel)
+                by_sheet = book.sheets()[0].name
                 sheet = book.sheet_by_name(by_sheet)
                 n_rows = sheet.nrows  # 行数
 
@@ -279,12 +298,20 @@ class Example(QWidget):
                         df = row[col_list[c]]
                         if isinstance(df, str):
                             df = 0
-                        else:
+                        elif isinstance(df, float):
                             df = int(df)
+                        elif c in col_list:
+                            df = 0
+                        else:
+                            showErrorDialog(self, f'表2:{file_excel},{row_num + 1}行,{c + 3 + 1}列', f'存在异常数据{df}')
+                            return
                         row_data.append(df)
                     sheet_data.append(row_data)
 
                 sheet_data = np.array(sheet_data)
+                if np.any(sheet_data < 0):
+                    showErrorDialog(self, f'表3:{file_excel}', '存在小于0的值')
+                    return
                 # print(sheet_data)
                 work_data = work_data + sheet_data
 
@@ -316,9 +343,10 @@ class Example(QWidget):
 
             # excel_list = ['D:/home/闫继龙/党务/2018年9月党统/计算汇总/表3/1.xls']
             for file_excel in excel_list:
-                by_sheet = u'附件6—“双带头人”党支部书记配备情况统计表（表4）'
+                # by_sheet = u'附件6—“双带头人”党支部书记配备情况统计表（表4）'
                 # 打开数据所在的工作簿，以及选择存有数据的工作表
                 book = xlrd.open_workbook(file_excel)
+                by_sheet = book.sheets()[0].name
                 sheet = book.sheet_by_name(by_sheet)
                 n_rows = sheet.nrows  # 行数
 
@@ -335,12 +363,20 @@ class Example(QWidget):
                         df = row[col_list[c]]
                         if isinstance(df, str):
                             df = 0
-                        else:
+                        elif isinstance(df, float):
                             df = int(df)
+                        elif c in col_list:
+                            df = 0
+                        else:
+                            showErrorDialog(self, f'表2:{file_excel},{row_num + 1}行,{c + 3 + 1}列', f'存在异常数据{df}')
+                            return
                         row_data.append(df)
                     sheet_data.append(row_data)
 
                 sheet_data = np.array(sheet_data)
+                if np.any(sheet_data < 0):
+                    showErrorDialog(self, f'表4:{file_excel}', '存在小于0的值')
+                    return
                 # print(sheet_data)
                 work_data = work_data + sheet_data
 
@@ -371,9 +407,10 @@ class Example(QWidget):
             work_data = np.zeros((16, 10), dtype='int16')
             # excel_list = ['D:/home/闫继龙/党务/2018年9月党统/计算汇总/表1/1.xls']
             for file_excel in excel_list:
-                by_sheet = u'附件7—学生党员结构和党组织统计表（表5）'
+                # by_sheet = u'附件7—学生党员结构和党组织统计表（表5）'
                 # 打开数据所在的工作簿，以及选择存有数据的工作表
                 book = xlrd.open_workbook(file_excel)
+                by_sheet = book.sheets()[0].name
                 sheet = book.sheet_by_name(by_sheet)
                 n_rows = sheet.nrows  # 行数
 
@@ -390,12 +427,20 @@ class Example(QWidget):
                         df = row[col_list[c]]
                         if isinstance(df, str):
                             df = 0
-                        else:
+                        elif isinstance(df, float):
                             df = int(df)
+                        elif c in col_list:
+                            df = 0
+                        else:
+                            showErrorDialog(self, f'表2:{file_excel},{row_num + 1}行,{c + 4 + 1}列', f'存在异常数据{df}')
+                            return
                         row_data.append(df)
                     sheet_data.append(row_data)
 
                 sheet_data = np.array(sheet_data)
+                if np.any(sheet_data < 0):
+                    showErrorDialog(self, f'表5:{file_excel}', '存在小于0的值')
+                    return
                 # print(sheet_data)
                 work_data += sheet_data
                 # print('88888888888888' * 8)
@@ -403,7 +448,7 @@ class Example(QWidget):
             db = {
                 'code': '200',
                 'msg': '成功',
-                'fill': 'F8:N23',
+                'fill': 'E8:N23',
                 'data': work_data.tolist()
             }
             with open(os.path.join(self.fileDir, 'work5.txt'), "w") as fp:
@@ -425,9 +470,10 @@ class Example(QWidget):
 
             # excel_list = ['D:/home/闫继龙/党务/2018年9月党统/计算汇总/表3/1.xls']
             for file_excel in excel_list:
-                by_sheet = u'附件8—失联党员情况汇总表（表6）'
+                # by_sheet = u'附件8—失联党员情况汇总表（表6）'
                 # 打开数据所在的工作簿，以及选择存有数据的工作表
                 book = xlrd.open_workbook(file_excel)
+                by_sheet = book.sheets()[0].name
                 sheet = book.sheet_by_name(by_sheet)
                 n_rows = sheet.nrows  # 行数
 
@@ -444,12 +490,20 @@ class Example(QWidget):
                         df = row[col_list[c]]
                         if isinstance(df, str):
                             df = 0
-                        else:
+                        elif isinstance(df, float):
                             df = int(df)
+                        elif c in col_list:
+                            df = 0
+                        else:
+                            showErrorDialog(self, f'表2:{file_excel},{row_num + 1}行,{c + 3 + 1}列', f'存在异常数据{df}')
+                            return
                         row_data.append(df)
                     sheet_data.append(row_data)
 
                 sheet_data = np.array(sheet_data)
+                if np.any(sheet_data < 0):
+                    showErrorDialog(self, f'表6:{file_excel}', '存在小于0的值')
+                    return
                 # print(sheet_data)
                 work_data = work_data + sheet_data
                 # print('88888888888888' * 8)
@@ -480,9 +534,10 @@ class Example(QWidget):
 
             # excel_list = ['D:/home/闫继龙/党务/2018年9月党统/计算汇总/表3/1.xls']
             for file_excel in excel_list:
-                by_sheet = u'附件9-失联党员组织处置情况汇总表（表7）'
+                # by_sheet = u'附件9-失联党员组织处置情况汇总表（表7）'
                 # 打开数据所在的工作簿，以及选择存有数据的工作表
                 book = xlrd.open_workbook(file_excel)
+                by_sheet = book.sheets()[0].name
                 sheet = book.sheet_by_name(by_sheet)
                 n_rows = sheet.nrows  # 行数
 
@@ -499,12 +554,20 @@ class Example(QWidget):
                         df = row[col_list[c]]
                         if isinstance(df, str):
                             df = 0
-                        else:
+                        elif isinstance(df, float):
                             df = int(df)
+                        elif c in col_list:
+                            df = 0
+                        else:
+                            showErrorDialog(self, f'表2:{file_excel},{row_num + 1}行,{c + 2 + 1}列', f'存在异常数据{df}')
+                            return
                         row_data.append(df)
                     sheet_data.append(row_data)
 
                 sheet_data = np.array(sheet_data)
+                if np.any(sheet_data < 0):
+                    showErrorDialog(self, f'表7:{file_excel}', '存在小于0的值')
+                    return
                 # print(sheet_data)
                 work_data = work_data + sheet_data
                 # print('88888888888888' * 8)

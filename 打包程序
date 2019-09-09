@@ -1,6 +1,7 @@
 pip install pyinstaller
 pyinstaller -F -w -n partyQt .\party\partywork.py
 pyinstaller  -w -n partyQt .\party\partywork.py
+# 正确的打包
 pyinstaller -F -w -D -n 党务信息汇总系统  .\party\partywork.py
 
 常用参数说明：
