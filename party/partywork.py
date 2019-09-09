@@ -167,6 +167,7 @@ class Example(QWidget):
 
                     row_data = []  # 行数据
                     col_list = [4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+                    col_err_list = []
                     for c in range(len(col_list)):
                         df = row[col_list[c]]
 
@@ -174,7 +175,7 @@ class Example(QWidget):
                             df = 0
                         elif isinstance(df, float):
                             df = int(df)
-                        elif c in col_list:
+                        elif col_list[c] in col_err_list:
                             df = 0
                         else:
                             showErrorDialog(self, f'表2:{file_excel},{row_num + 1}行,{c + 4 + 1}列', f'存在异常数据{df}')
@@ -231,13 +232,14 @@ class Example(QWidget):
 
                     row_data = []  # 行数据
                     col_list = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21]
+                    col_err_list = [3, 5, 10, 14, 21]
                     for c in range(len(col_list)):
                         df = row[col_list[c]]
                         if isinstance(df, str):
                             df = 0
                         elif isinstance(df, float):
                             df = int(df)
-                        elif c in col_list:
+                        elif col_list[c] in col_err_list:
                             df = 0
                         else:
                             showErrorDialog(self, f'表2:{file_excel},{row_num + 1}行,{c + 3 + 1}列', f'存在异常数据{df}')
@@ -294,13 +296,14 @@ class Example(QWidget):
                     # print(row[3:13])
                     row_data = []  # 行数据
                     col_list = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+                    col_err_list = []
                     for c in range(len(col_list)):
                         df = row[col_list[c]]
                         if isinstance(df, str):
                             df = 0
                         elif isinstance(df, float):
                             df = int(df)
-                        elif c in col_list:
+                        elif col_list[c] in col_err_list:
                             df = 0
                         else:
                             showErrorDialog(self, f'表2:{file_excel},{row_num + 1}行,{c + 3 + 1}列', f'存在异常数据{df}')
@@ -359,13 +362,14 @@ class Example(QWidget):
                     # print(row[3:13])
                     row_data = []  # 行数据
                     col_list = [3, 4, 5, 6, 7, 8, 9, 10, 11]
+                    col_err_list = []
                     for c in range(len(col_list)):
                         df = row[col_list[c]]
                         if isinstance(df, str):
                             df = 0
                         elif isinstance(df, float):
                             df = int(df)
-                        elif c in col_list:
+                        elif col_list[c] in col_err_list:
                             df = 0
                         else:
                             showErrorDialog(self, f'表2:{file_excel},{row_num + 1}行,{c + 3 + 1}列', f'存在异常数据{df}')
@@ -423,13 +427,14 @@ class Example(QWidget):
 
                     row_data = []  # 行数据
                     col_list = [4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
+                    col_err_list = [4, 9, 13]
                     for c in range(len(col_list)):
                         df = row[col_list[c]]
                         if isinstance(df, str):
                             df = 0
                         elif isinstance(df, float):
                             df = int(df)
-                        elif c in col_list:
+                        elif col_list[c] in col_err_list:
                             df = 0
                         else:
                             showErrorDialog(self, f'表2:{file_excel},{row_num + 1}行,{c + 4 + 1}列', f'存在异常数据{df}')
@@ -486,13 +491,14 @@ class Example(QWidget):
                     # print(row[3:13])
                     row_data = []  # 行数据
                     col_list = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
+                    col_err_list = []
                     for c in range(len(col_list)):
                         df = row[col_list[c]]
                         if isinstance(df, str):
                             df = 0
                         elif isinstance(df, float):
                             df = int(df)
-                        elif c in col_list:
+                        elif col_list[c] in col_err_list:
                             df = 0
                         else:
                             showErrorDialog(self, f'表2:{file_excel},{row_num + 1}行,{c + 3 + 1}列', f'存在异常数据{df}')
@@ -550,13 +556,14 @@ class Example(QWidget):
                     # print(row[3:13])
                     row_data = []  # 行数据
                     col_list = [2, 3, 4, 5, 6, 7, 8, 9]
+                    col_err_list = []
                     for c in range(len(col_list)):
                         df = row[col_list[c]]
                         if isinstance(df, str):
                             df = 0
                         elif isinstance(df, float):
                             df = int(df)
-                        elif c in col_list:
+                        elif col_list[c] in col_err_list:
                             df = 0
                         else:
                             showErrorDialog(self, f'表2:{file_excel},{row_num + 1}行,{c + 2 + 1}列', f'存在异常数据{df}')
