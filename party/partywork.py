@@ -150,7 +150,16 @@ class Example(QWidget):
             work_data = np.zeros((3, 12), dtype='int16')
 
             # excel_list = ['D:/home/闫继龙/党务/2018年9月党统/计算汇总/表1/1.xls']
+            xml_list = []
             for file_excel in excel_list:
+
+                # 判断文本格式，如果‘xml’是错误文件
+                with open(file_excel, 'r', encoding='ISO-8859-1') as f:
+                    line = f.readline()
+                    # print(line)
+                    if 'xml' in line:
+                        xml_list.append(file_excel.split('\\')[-1])
+
                 # by_sheet = u'附件3—党组织情况统计表（表1）'
                 # 打开数据所在的工作簿，以及选择存有数据的工作表
                 book = xlrd.open_workbook(file_excel)
@@ -190,13 +199,26 @@ class Example(QWidget):
                     # print(sheet_data)
                 work_data += sheet_data
                 # print('88888888888888' * 8)
-            db = {
-                'code': '200',
-                'msg': '成功',
-                'num_sheet': len(excel_list),
-                'fill': 'E7:P9',
-                'data': work_data.tolist()
-            }
+
+            db = {}
+            if len(xml_list) == 0:
+                db = {
+                    'code': '200',
+                    'msg': '成功',
+                    'num_sheet': len(excel_list),
+                    'fill': 'E7:P9',
+                    'data': work_data.tolist()
+                }
+            else:
+                db = {
+                    'code': '500',
+                    'msg': '失败',
+                    'describe': '以下文件是xml文本，可能会对计算结果带来影响，请手动计算err_sheet表',
+                    'err_sheet': xml_list,
+                    'num_sheet': len(excel_list),
+                    'fill': 'E7:P9',
+                    'data': work_data.tolist()
+                }
             # print(db)
             with open(os.path.join(self.fileDir, 'work1.txt'), "w") as fp:
                 fp.write(json.dumps(db, ensure_ascii=False, indent=4))
@@ -216,7 +238,16 @@ class Example(QWidget):
             work_data = np.zeros((10, 19), dtype='int16')
 
             # excel_list = ['D:/home/闫继龙/党务/2018年9月党统/计算汇总/表1/1.xls']
+            xml_list = []
             for file_excel in excel_list:
+
+                # 判断文本格式，如果‘xml’是错误文件
+                with open(file_excel, 'r', encoding='ISO-8859-1') as f:
+                    line = f.readline()
+                    # print(line)
+                    if 'xml' in line:
+                        xml_list.append(file_excel.split('\\')[-1])
+
                 # by_sheet = u'附件4—教师党员结构统计表（表2）'
                 # 打开数据所在的工作簿，以及选择存有数据的工作表
                 book = xlrd.open_workbook(file_excel)
@@ -255,13 +286,26 @@ class Example(QWidget):
                 # print(sheet_data)
                 work_data += sheet_data
                 # print('88888888888888' * 8)
-            db = {
-                'code': '200',
-                'msg': '成功',
-                'num_sheet': len(excel_list),
-                'fill': 'D8:V17',
-                'data': work_data.tolist()
-            }
+
+            db = {}
+            if len(xml_list) == 0:
+                db = {
+                    'code': '200',
+                    'msg': '成功',
+                    'num_sheet': len(excel_list),
+                    'fill': 'D8:V17',
+                    'data': work_data.tolist()
+                }
+            else:
+                db = {
+                    'code': '500',
+                    'msg': '失败',
+                    'describe': '以下文件是xml文本，可能会对计算结果带来影响，请手动计算err_sheet表',
+                    'err_sheet': xml_list,
+                    'num_sheet': len(excel_list),
+                    'fill': 'D8:V17',
+                    'data': work_data.tolist()
+                }
             with open(os.path.join(self.fileDir, 'work2.txt'), "w") as fp:
                 fp.write(json.dumps(db, ensure_ascii=False, indent=4))
             showDialog(self, 'work2')
@@ -280,7 +324,16 @@ class Example(QWidget):
             work_data = np.zeros((4, 10), dtype='int16')
 
             # excel_list = ['D:/home/闫继龙/党务/2018年9月党统/计算汇总/表3/1.xls']
+            xml_list = []
             for file_excel in excel_list:
+
+                # 判断文本格式，如果‘xml’是错误文件
+                with open(file_excel, 'r', encoding='ISO-8859-1') as f:
+                    line = f.readline()
+                    # print(line)
+                    if 'xml' in line:
+                        xml_list.append(file_excel.split('\\')[-1])
+
                 # by_sheet = u'附件5—高层次人才党员统计表（表3）'
                 # 打开数据所在的工作簿，以及选择存有数据的工作表
                 book = xlrd.open_workbook(file_excel)
@@ -321,14 +374,27 @@ class Example(QWidget):
 
                 # print('88888888888888' * 8)
             # print(work_data)
-            db = {
-                'code': '200',
-                'msg': '成功',
-                'num_sheet': len(excel_list),
-                'fill': 'D7:M10',
-                'data': work_data.tolist()
-                # 'data': row_dict
-            }
+
+            db = {}
+            if len(xml_list) == 0:
+                db = {
+                    'code': '200',
+                    'msg': '成功',
+                    'num_sheet': len(excel_list),
+                    'fill': 'D7:M10',
+                    'data': work_data.tolist()
+                    # 'data': row_dict
+                }
+            else:
+                db = {
+                    'code': '500',
+                    'msg': '失败',
+                    'describe': '以下文件是xml文本，可能会对计算结果带来影响，请手动计算err_sheet表',
+                    'err_sheet': xml_list,
+                    'num_sheet': len(excel_list),
+                    'fill': 'D7:M10',
+                    'data': work_data.tolist()
+                }
             with open(os.path.join(self.fileDir, 'work3.txt'), "w") as fp:
                 fp.write(json.dumps(db, ensure_ascii=False, indent=4))
             showDialog(self, 'work3')
@@ -347,7 +413,16 @@ class Example(QWidget):
             work_data = np.zeros((3, 9), dtype='int16')
 
             # excel_list = ['D:/home/闫继龙/党务/2018年9月党统/计算汇总/表3/1.xls']
+            xml_list = []
             for file_excel in excel_list:
+
+                # 判断文本格式，如果‘xml’是错误文件
+                with open(file_excel, 'r', encoding='ISO-8859-1') as f:
+                    line = f.readline()
+                    # print(line)
+                    if 'xml' in line:
+                        xml_list.append(file_excel.split('\\')[-1])
+
                 # by_sheet = u'附件6—“双带头人”党支部书记配备情况统计表（表4）'
                 # 打开数据所在的工作簿，以及选择存有数据的工作表
                 book = xlrd.open_workbook(file_excel)
@@ -388,14 +463,27 @@ class Example(QWidget):
 
                 # print('88888888888888' * 8)
             # print(work_data)
-            db = {
-                'code': '200',
-                'msg': '成功',
-                'num_sheet': len(excel_list),
-                'fill': 'D6:L8',
-                'data': work_data.tolist()
-                # 'data': row_dict
-            }
+
+            db = {}
+            if len(xml_list) == 0:
+                db = {
+                    'code': '200',
+                    'msg': '成功',
+                    'num_sheet': len(excel_list),
+                    'fill': 'D6:L8',
+                    'data': work_data.tolist()
+                    # 'data': row_dict
+                }
+            else:
+                db = {
+                    'code': '500',
+                    'msg': '失败',
+                    'describe': '以下文件是xml文本，可能会对计算结果带来影响，请手动计算err_sheet表',
+                    'err_sheet': xml_list,
+                    'num_sheet': len(excel_list),
+                    'fill': 'D6:L8',
+                    'data': work_data.tolist()
+                }
             with open(os.path.join(self.fileDir, 'work4.txt'), "w") as fp:
                 fp.write(json.dumps(db, ensure_ascii=False, indent=4))
             showDialog(self, 'work4')
@@ -413,7 +501,16 @@ class Example(QWidget):
             # 所有数据
             work_data = np.zeros((16, 10), dtype='int16')
             # excel_list = ['D:/home/闫继龙/党务/2018年9月党统/计算汇总/表1/1.xls']
+            xml_list = []
             for file_excel in excel_list:
+
+                # 判断文本格式，如果‘xml’是错误文件
+                with open(file_excel, 'r', encoding='ISO-8859-1') as f:
+                    line = f.readline()
+                    # print(line)
+                    if 'xml' in line:
+                        xml_list.append(file_excel.split('\\')[-1])
+
                 # by_sheet = u'附件7—学生党员结构和党组织统计表（表5）'
                 # 打开数据所在的工作簿，以及选择存有数据的工作表
                 book = xlrd.open_workbook(file_excel)
@@ -453,13 +550,25 @@ class Example(QWidget):
                 work_data += sheet_data
                 # print('88888888888888' * 8)
             # print(work_data)
-            db = {
-                'code': '200',
-                'msg': '成功',
-                'num_sheet': len(excel_list),
-                'fill': 'E8:N23',
-                'data': work_data.tolist()
-            }
+            db = {}
+            if len(xml_list) == 0:
+                db = {
+                    'code': '200',
+                    'msg': '成功',
+                    'num_sheet': len(excel_list),
+                    'fill': 'E8:N23',
+                    'data': work_data.tolist()
+                }
+            else:
+                db = {
+                    'code': '500',
+                    'msg': '失败',
+                    'describe': '以下文件是xml文本，可能会对计算结果带来影响，请手动计算err_sheet表',
+                    'err_sheet': xml_list,
+                    'num_sheet': len(excel_list),
+                    'fill': 'E8:N23',
+                    'data': work_data.tolist()
+                }
             with open(os.path.join(self.fileDir, 'work5.txt'), "w") as fp:
                 fp.write(json.dumps(db, ensure_ascii=False, indent=4))
             showDialog(self, 'work5')
@@ -478,7 +587,16 @@ class Example(QWidget):
             work_data = np.zeros((4, 11), dtype='int16')
 
             # excel_list = ['D:/home/闫继龙/党务/2018年9月党统/计算汇总/表3/1.xls']
+            xml_list = []
             for file_excel in excel_list:
+
+                # 判断文本格式，如果‘xml’是错误文件
+                with open(file_excel, 'r', encoding='ISO-8859-1') as f:
+                    line = f.readline()
+                    # print(line)
+                    if 'xml' in line:
+                        xml_list.append(file_excel.split('\\')[-1])
+
                 # by_sheet = u'附件8—失联党员情况汇总表（表6）'
                 # 打开数据所在的工作簿，以及选择存有数据的工作表
                 book = xlrd.open_workbook(file_excel)
@@ -518,14 +636,27 @@ class Example(QWidget):
                 work_data = work_data + sheet_data
                 # print('88888888888888' * 8)
             # print(work_data)
-            db = {
-                'code': '200',
-                'msg': '成功',
-                'num_sheet': len(excel_list),
-                'fill': 'D7:N10',
-                'data': work_data.tolist()
-                # 'data': row_dict
-            }
+
+            db = {}
+            if len(xml_list) == 0:
+                db = {
+                    'code': '200',
+                    'msg': '成功',
+                    'num_sheet': len(excel_list),
+                    'fill': 'D7:N10',
+                    'data': work_data.tolist()
+                    # 'data': row_dict
+                }
+            else:
+                db = {
+                    'code': '500',
+                    'msg': '失败',
+                    'describe': '以下文件是xml文本，可能会对计算结果带来影响，请手动计算err_sheet表',
+                    'err_sheet': xml_list,
+                    'num_sheet': len(excel_list),
+                    'fill': 'D7:N10',
+                    'data': work_data.tolist()
+                }
             with open(os.path.join(self.fileDir, 'work6.txt'), "w") as fp:
                 fp.write(json.dumps(db, ensure_ascii=False, indent=4))
             showDialog(self, 'work6')
@@ -544,7 +675,16 @@ class Example(QWidget):
             work_data = np.zeros((4, 8), dtype='int16')
 
             # excel_list = ['D:/home/闫继龙/党务/2018年9月党统/计算汇总/表3/1.xls']
+            xml_list = []
             for file_excel in excel_list:
+
+                # 判断文本格式，如果‘xml’是错误文件
+                with open(file_excel, 'r', encoding='ISO-8859-1') as f:
+                    line = f.readline()
+                    # print(line)
+                    if 'xml' in line:
+                        xml_list.append(file_excel.split('\\')[-1])
+
                 # by_sheet = u'附件9-失联党员组织处置情况汇总表（表7）'
                 # 打开数据所在的工作簿，以及选择存有数据的工作表
                 book = xlrd.open_workbook(file_excel)
@@ -584,14 +724,27 @@ class Example(QWidget):
                 work_data = work_data + sheet_data
                 # print('88888888888888' * 8)
             # print(work_data)
-            db = {
-                'code': '200',
-                'msg': '成功',
-                'num_sheet': len(excel_list),
-                'fill': 'C7:J10',
-                'data': work_data.tolist()
-                # 'data': row_dict
-            }
+
+            db = {}
+            if len(xml_list) == 0:
+                db = {
+                    'code': '200',
+                    'msg': '成功',
+                    'num_sheet': len(excel_list),
+                    'fill': 'C7:J10',
+                    'data': work_data.tolist()
+                    # 'data': row_dict
+                }
+            else:
+                db = {
+                    'code': '500',
+                    'msg': '失败',
+                    'describe': '以下文件是xml文本，可能会对计算结果带来影响，请手动计算err_sheet表',
+                    'err_sheet': xml_list,
+                    'num_sheet': len(excel_list),
+                    'fill': 'C7:J10',
+                    'data': work_data.tolist()
+                }
             with open(os.path.join(self.fileDir, 'work7.txt'), "w") as fp:
                 fp.write(json.dumps(db, ensure_ascii=False, indent=4))
             showDialog(self, 'work7')
