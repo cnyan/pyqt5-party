@@ -193,6 +193,7 @@ class Example(QWidget):
             db = {
                 'code': '200',
                 'msg': '成功',
+                'num_sheet': len(excel_list),
                 'fill': 'E7:P9',
                 'data': work_data.tolist()
             }
@@ -254,10 +255,10 @@ class Example(QWidget):
                 # print(sheet_data)
                 work_data += sheet_data
                 # print('88888888888888' * 8)
-            # print(work_data)
             db = {
                 'code': '200',
                 'msg': '成功',
+                'num_sheet': len(excel_list),
                 'fill': 'D8:V17',
                 'data': work_data.tolist()
             }
@@ -323,6 +324,7 @@ class Example(QWidget):
             db = {
                 'code': '200',
                 'msg': '成功',
+                'num_sheet': len(excel_list),
                 'fill': 'D7:M10',
                 'data': work_data.tolist()
                 # 'data': row_dict
@@ -389,6 +391,7 @@ class Example(QWidget):
             db = {
                 'code': '200',
                 'msg': '成功',
+                'num_sheet': len(excel_list),
                 'fill': 'D6:L8',
                 'data': work_data.tolist()
                 # 'data': row_dict
@@ -453,6 +456,7 @@ class Example(QWidget):
             db = {
                 'code': '200',
                 'msg': '成功',
+                'num_sheet': len(excel_list),
                 'fill': 'E8:N23',
                 'data': work_data.tolist()
             }
@@ -517,6 +521,7 @@ class Example(QWidget):
             db = {
                 'code': '200',
                 'msg': '成功',
+                'num_sheet': len(excel_list),
                 'fill': 'D7:N10',
                 'data': work_data.tolist()
                 # 'data': row_dict
@@ -582,6 +587,7 @@ class Example(QWidget):
             db = {
                 'code': '200',
                 'msg': '成功',
+                'num_sheet': len(excel_list),
                 'fill': 'C7:J10',
                 'data': work_data.tolist()
                 # 'data': row_dict
