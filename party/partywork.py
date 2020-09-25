@@ -70,9 +70,9 @@ class Example(QWidget):
     def __init__(self):
         super().__init__()
         self.fileDir = 'D:\home\partydb'
-        self.free_fileDir=r'D:\home\partydb\表1'  # 自由模式下的文件路径
-        self.free_row = []   # 自由模式下的行
-        self.free_col = []   # 自由模式下的列
+        self.free_fileDir = r'D:\home\partydb\表1'  # 自由模式下的文件路径
+        self.free_row = []  # 自由模式下的行
+        self.free_col = []  # 自由模式下的列
         self.initUI()
 
     def initUI(self):
@@ -103,9 +103,9 @@ class Example(QWidget):
         # 自由模式
         free_title = QPushButton('自由模式')
         self.free_titleEdit = QLineEdit(self.free_fileDir)
-        self.free_titleRow = QLineEdit('从1开始，输入需要统计的行，以空格隔开')
-        self.free_titleCol = QLineEdit('从1开始，输入需要统计的列，以空格隔开')
-        self.free_errorCol = QLineEdit('从1开始，输入 错误 的列，以空格隔开')
+        self.free_titleRow = QLineEdit('从1开始，输入开始和结束的行号，以空格隔开')
+        self.free_titleCol = QLineEdit('从1开始，输入开始和结束的列号，以空格隔开')
+        self.free_errorCol = QLineEdit('输入错误的列号，以空格隔开，如果没有则输入空')
 
         free_titleBtn = QPushButton('submit', self)
         free_titleBtn.clicked.connect(self.free_buttonClicked)
@@ -114,7 +114,7 @@ class Example(QWidget):
         grid.setSpacing(10)
 
         grid.addWidget(title, 1, 0)
-        grid.addWidget(self.titleEdit, 1, 1,1,4)
+        grid.addWidget(self.titleEdit, 1, 1, 1, 4)
         grid.addWidget(titleBtn, 1, 6)
 
         grid.addWidget(work1Btn, 2, 0)
@@ -126,12 +126,12 @@ class Example(QWidget):
         grid.addWidget(work7Btn, 2, 6)
 
         # 自由模式
-        grid.addWidget(free_title,3,1,1,5)
-        grid.addWidget(self.free_titleEdit,4,0,1,3)
-        grid.addWidget(self.free_titleRow,4,4,1,3)
-        grid.addWidget(self.free_titleCol,6,0,1,3)
-        grid.addWidget(self.free_errorCol,6,4,1,3)
-        grid.addWidget(free_titleBtn,7,1,1,5)
+        grid.addWidget(free_title, 3, 1, 1, 5)
+        grid.addWidget(self.free_titleEdit, 4, 0, 1, 3)
+        grid.addWidget(self.free_titleRow, 4, 4, 1, 3)
+        grid.addWidget(self.free_titleCol, 6, 0, 1, 3)
+        grid.addWidget(self.free_errorCol, 6, 4, 1, 3)
+        grid.addWidget(free_titleBtn, 7, 1, 1, 5)
 
         self.setLayout(grid)
         self.center()
@@ -159,17 +159,24 @@ class Example(QWidget):
         # self.statusBar().showMessage(sender.text() + ' was pressed')
 
     def free_buttonClicked(self):
+        sender = self.sender()
+        rootdir = self.free_titleEdit.text()
+        free_row = list(map(int, self.free_titleRow.text().split(' ')))
+        free_col = list(map(int, self.free_titleCol.text().split(' ')))
+        free_row = [int(i) - 1 for i in range(free_row[0], free_row[1]+1)]
+        free_col = [int(i) - 1 for i in range(free_col[0], free_col[1]+1)]
+
+        if self.free_errorCol.text() == '':
+            col_err_list = []
+        else:
+            col_err_list = [int(i) - 1 for i in self.free_errorCol.text().split(' ')]
+        excel_list = all_path(rootdir)
+
         try:
-            sender = self.sender()
-            rootdir = self.free_titleEdit.text()
-            self.free_row = [int(i)-1 for i in self.free_titleRow.text().split(' ')]
-            self.free_col =  [int(i)-1 for i in self.free_titleCol.text().split(' ')]
-            col_err_list = [int(i)-1 for i in self.free_errorCol.text().split(' ')]
-            # print(self.free_row)
-            excel_list = all_path(rootdir)
             # 所有数据
-            work_data = np.zeros((len(self.free_row), len(self.free_col)), dtype='int16')
+            work_data = np.zeros((len(free_row), len(free_col)), dtype='int64')
             xml_list = []
+            minus_num = []  # 负数表
 
             for file_excel in excel_list:
                 # 判断文本格式，如果‘xml’是错误文件
@@ -183,57 +190,62 @@ class Example(QWidget):
                 book = xlrd.open_workbook(file_excel)
                 by_sheet = book.sheets()[0].name
                 sheet = book.sheet_by_name(by_sheet)
+
                 sheet_data = []  # 表数据
                 # 按行遍历一张表
-                for row_num in self.free_row:
+                for row_num in free_row:
                     row = sheet.row_values(row_num)
                     row_data = []  # 行数据
-                    for c in  self.free_col:
+                    for c in free_col:
                         df = row[c]
-                        if isinstance(df, str):
+
+                        if df == "":
+                            df = 0
+                        elif isinstance(df, str):
                             df = 0
                         elif isinstance(df, float):
                             df = int(df)
                         elif c in col_err_list:
                             df = 0
                         else:
-                            showErrorDialog(self, f'{rootdir[-2:]}:{file_excel},{row_num + 1}行,{c +1}列', f'存在异常数据{df}')
+                            showErrorDialog(self, f'{rootdir[-2:]}:{file_excel},{row_num + 1}行,{c + 1}列', f'存在异常数据{df}')
                             return
+                        if int(df) < 0:
+                            minus_num.append(file_excel.split('\\')[-1])
+
                         row_data.append(df)
                     sheet_data.append(row_data)
 
                 sheet_data = np.array(sheet_data)
+
                 if np.any(sheet_data < 0):
-                    showErrorDialog(self, f'work1:{file_excel}', '存在小于0的值')
+                    showErrorDialog(self, f'work'+ rootdir[-1]+f':{file_excel}', '存在小于0的值')
                     return
                     # print(sheet_data)
-                work_data += sheet_data
+                work_data += np.array(sheet_data)
+                if np.any(work_data < 0):
+                    showErrorDialog(self, f'work'+ rootdir[-1]+f':{file_excel}', '存在小于0的值')
+                    return
             # print(work_data)
-            db = {}
-            if len(xml_list) == 0:
-                db = {
-                    'code': '200',
-                    'msg': '成功',
-                    'num_sheet': len(excel_list),
-                    'fill': chr(self.free_col[0]+65)+str(self.free_row[0]+1)+':'+chr(self.free_col[-1]+65)+str(self.free_row[-1]+1),
-                    'data': work_data.tolist()
-                }
-            else:
-                db = {
-                    'code': '500',
-                    'msg': '失败',
-                    'describe': '以下文件是xml文本，可能会对计算结果带来影响，请手动计算err_sheet表',
-                    'err_sheet': xml_list,
-                    'num_sheet': len(excel_list),
-                    'fill': chr(self.free_col[0]+65)+str(self.free_row[0]+1)+':'+chr(self.free_col[-1]+65)+str(self.free_row[-1]+1),
-                    'data': work_data.tolist()
-                }
+
+            db = {
+                'code': '000',
+                'msg': '查看信息',
+                'describe': 'xml_sheet和minus_seet，可能会对计算结果带来影响，请手动计算err_sheet表',
+                'xml_sheet(xml文件列表)': xml_list,
+                'minus_seet(存在负数的文件)': minus_num,
+                'num_sheet(程序正确处理的文件)': len(excel_list),
+                'fill': chr(free_col[0] + 65) + str(free_row[0] + 1) + ':' + chr(
+                    free_col[-1] + 65) + str(free_row[-1] + 1),
+                'data': work_data.tolist()
+            }
             # print(db)
-            with open(os.path.join(self.fileDir, 'work'+rootdir[-1]+'.txt'), "w") as fp:
+            with open(os.path.join(self.fileDir, 'work' + rootdir[-1] + '.txt'), "w") as fp:
                 fp.write(json.dumps(db, ensure_ascii=False, indent=4))
             showDialog(self, str(rootdir[-2:]))
         except Exception as e:
-            showErrorDialog(self, 'work'+rootdir[-1], e.__str__())
+            print(e)
+            showErrorDialog(self, 'work' + str(rootdir[-1]), e.__str__())
 
     def work1(self):
         try:
